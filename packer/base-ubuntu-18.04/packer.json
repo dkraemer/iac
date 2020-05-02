@@ -1,0 +1,53 @@
+{
+    "variables": {
+        "vm_name": "base-ubuntu-18.04",
+        "vm_attach_snapshot": "base",
+        "vm_target_snapshot": "packed",
+        "vm_user": "ubuntu",
+        "vm_password": "ubuntu"
+    },
+    "builders": [
+        {
+            "type": "virtualbox-vm",
+            "communicator": "ssh",
+            "vm_name": "{{user `vm_name`}}",
+            "attach_snapshot": "{{user `vm_attach_snapshot`}}",
+            "headless": true,
+            "skip_export": true,
+            "target_snapshot": "{{user `vm_target_snapshot`}}",
+            "shutdown_command": "sudo systemctl poweroff",
+            "ssh_username": "{{user `vm_user`}}",
+            "ssh_password": "{{user `vm_password`}}",
+            "force_delete_snapshot": false
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "provision.sh",
+            "destination": "provision.sh"
+        },
+        {
+            "type": "file",
+            "source": "grub",
+            "destination": "grub"
+        },
+        {
+            "type": "file",
+            "source": "bash_aliases",
+            "destination": ".bash_aliases"
+        },
+        {
+            "type": "file",
+            "source": "../../id_rsa.pub",
+            "destination": "authorized_keys"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod +x provision.sh",
+                "./provision.sh {{user `vm_password`}}"
+            ]
+        }
+    ]
+}

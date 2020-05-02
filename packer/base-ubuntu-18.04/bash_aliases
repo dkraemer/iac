@@ -1,0 +1,45 @@
+alias ..='cd ..'
+alias cls='clear'
+
+alias chgrp='chgrp -v'
+alias chmod='chmod -v'
+alias chown='chown -v'
+alias cp='cp -iv'
+alias md='mkdir -pv'
+alias mv='mv -iv'
+alias rm='rm -iv'
+
+alias df='df -hT'
+alias du='du -h'
+alias dud='find . -maxdepth 1 -type d -exec du -sh {} \; 2>/dev/null'
+alias free='free -m'
+
+alias e='$VISUAL'
+alias ea='$VISUAL ~/.bash_aliases'
+alias ra='. ~/.bash_aliases'
+alias sshconfig='$VISUAL ~/.ssh/config'
+
+alias ls='LC_COLLATE=C ls --color=auto --group-directories-first -F'
+alias l='ls -lhsi'
+alias l.="ls -lhsid .*"
+alias la='ls -lhsia'
+alias ll='ls -lhsi'
+alias lt='ls -lhsit'
+alias ltr='ls -lhsitr'
+
+alias poweroff='sudo systemctl poweroff'
+alias reboot='sudo systemctl reboot'
+alias rootme='sudo su -'
+alias sc='sudo systemctl'
+alias tcp='netstat -plant'
+alias udp='netstat -planu'
+
+alias sortedenv='env | sort'
+alias vars='set -o posix; set | grep -v ^_; set +o posix'
+
+alias untar='tar xfa'
+alias view='vim -R'
+
+EDITOR=vim
+VISUAL=vim
+export EDITOR VISUAL
