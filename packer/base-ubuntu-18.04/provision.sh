@@ -6,7 +6,7 @@ apt_get="sudo DEBIAN_FRONTEND=noninteractive apt-get"
 apt_get_install="${apt_get} install -y --no-install-recommends"
 
 ### Unlock sudo and add provision sudoers file
-echo $1 | sudo -S echo "sudo unlocked"
+echo $PASSWORD | sudo -S echo "sudo unlocked"
 echo "$USER ALL=(ALL) NOPASSWD:ALL" | (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/provision')
 
 ### Remove password and disable password login
@@ -68,6 +68,3 @@ $apt_get remove -y --purge plymouth linux-firmware
 
 ### Purge unneeded auto packages
 $apt_get autoremove -y --purge
-
-### Delete this script
-rm -v -f "${0}"

@@ -44,10 +44,10 @@
         },
         {
             "type": "shell",
-            "inline": [
-                "chmod +x provision.sh",
-                "./provision.sh {{user `vm_password`}}"
-            ]
+            "environment_vars": [
+                "PASSWORD={{user `vm_password`}}"
+            ],
+            "script": "provision.sh"
         }
     ]
 }
