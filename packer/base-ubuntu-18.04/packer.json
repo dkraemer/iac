@@ -24,11 +24,6 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "provision.sh",
-            "destination": "provision.sh"
-        },
-        {
-            "type": "file",
             "source": "grub",
             "destination": "grub"
         },
