@@ -17,8 +17,8 @@ This is required until I decide to preseed the installation. (Which sucks BTW)
 - [Files](packer) for packer (build and provision)
   - [Minimal Ubuntu 18.04 LTS base image](packer/base-ubuntu-18.04)
     - Variables:
-      - `vm_name`: Name of the VM created in step 2. (default: `base-ubuntu-18.04`)
-      - `vm_attach_snapshot`: Name of the snapshot created in step 4 (default: `base`).
+      - `vm_name`: Name of the VM created in step 2. (default: `base-ubuntu-18.04`).
+      - `vm_attach_snapshot`: Name of the snapshot created in step 4 (default: `packing`).
       - `vm_target_snapshot`: Name of the snapshot that is created by packer (default: `packed`).
       - `vm_user`: Name of the user created during Ubuntu installation (default: `ubuntu`).
       - `vm_password`: User's password (default: `ubuntu`).

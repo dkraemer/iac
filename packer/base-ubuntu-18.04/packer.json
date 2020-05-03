@@ -1,7 +1,7 @@
 {
     "variables": {
         "vm_name": "base-ubuntu-18.04",
-        "vm_attach_snapshot": "base",
+        "vm_attach_snapshot": "packing",
         "vm_target_snapshot": "packed",
         "vm_user": "ubuntu",
         "vm_password": "ubuntu"
