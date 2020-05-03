@@ -36,10 +36,11 @@ alias udp='netstat -planu'
 
 alias sortedenv='env | sort'
 alias vars='set -o posix; set | grep -v ^_; set +o posix'
-
 alias untar='tar xfa'
-alias view='vim -R'
 
-EDITOR=vim
-VISUAL=vim
+EDITOR=nano
+if which vim &>/dev/null; then
+    EDITOR=vim
+fi
+VISUAL=$EDITOR
 export EDITOR VISUAL
