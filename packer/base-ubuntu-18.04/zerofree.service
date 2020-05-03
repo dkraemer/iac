@@ -1,0 +1,18 @@
+# Copyright 2020 Daniel Kraemer <dkraemer@dkross.org>. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+[Unit]
+Description=zerofree of /dev/sda2
+DefaultDependencies=no
+Before=shutdown.target
+Before=rescue.service
+Conflicts=shutdown.target
+Conflicts=rescue.service
+
+[Service]
+ExecStart=/usr/local/sbin/zerofree.sh service
+Type=idle
+StandardInput=tty-force
+StandardOutput=inherit
+StandardError=inherit

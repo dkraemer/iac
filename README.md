@@ -22,14 +22,9 @@ This is required until I decide to preseed the installation. (Which sucks BTW)
       - `vm_target_snapshot`: Name of the snapshot that is created by packer (default: `packed`).
       - `vm_user`: Name of the user created during Ubuntu installation (default: `ubuntu`).
       - `vm_password`: User's password (default: `ubuntu`).
+      - `vm_compact`: When set to `yes`, the provisioner will remove build tools, run `apt-get clean` and `zerofree` (default: `yes`).
     - Builders:
       - [virtualbox-vm](https://www.packer.io/docs/builders/virtualbox/vm/)
         - Communicator: [ssh](https://www.packer.io/docs/communicators/ssh/)
     - Provisioners:
       - [shell](https://www.packer.io/docs/provisioners/shell/)
-    - Post-processors:
-      - [vagrant](https://www.packer.io/docs/post-processors/vagrant/) (not implemented yet)
-
-
-
-

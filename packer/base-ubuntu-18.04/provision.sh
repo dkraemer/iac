@@ -8,6 +8,7 @@ set -o errexit
 
 apt_get="sudo DEBIAN_FRONTEND=noninteractive apt-get"
 apt_get_install="${apt_get} install -y --no-install-recommends"
+apt_get_autoremove="${apt_get} autoremove -y --purge"
 
 ### Unlock sudo and add provision sudoers file
 echo $PASSWORD | sudo -S echo "sudo unlocked"
@@ -28,7 +29,7 @@ $apt_get upgrade -y
 cd $HOME
 
 ### Install VirtualBox guest additions
-$apt_get_install make gcc perl
+$apt_get_install make gcc perl linux-headers-$(uname -r)
 sudo mount -v VBoxGuestAdditions.iso /media -o loop,ro
 set +o errexit
 sudo /media/VBoxLinuxAdditions.run
@@ -59,16 +60,43 @@ chmod -v 600 authorized_keys
 mkdir -v -m 700 .ssh
 mv -v authorized_keys .ssh/
 
+### Disable clearing off tty1
+sudo mkdir -v '/etc/systemd/system/getty@tty1.service.d/'
+sudo install -v -m 644 noclear.conf '/etc/systemd/system/getty@tty1.service.d/'
+rm -v -f noclear.conf
+
 ### Install .bash_aliases
 chmod -v 644 .bash_aliases
 sudo cp -v .bash_aliases /etc/skel/
 sudo cp -v .bash_aliases /root/
 
+### Install zerofree files for systemd
+sudo install -v -m 744 zerofree.sh /usr/local/sbin/
+sudo install -v -m 644 zerofree.service /etc/systemd/system/
+sudo install -v -m 644 zerofree.target /etc/systemd/system/
+rm -v -f zerofree.*
+
 ### Install addtional packages
 $apt_get_install zerofree net-tools
 
 ### Purge unwanted packages
-$apt_get remove -y --purge plymouth linux-firmware
+$apt_get_autoremove plymouth linux-firmware
 
 ### Purge unneeded auto packages
-$apt_get autoremove -y --purge
+# TODO: Is this really required? Does the previous run:
+# a) Remove ONLY plymouth, ... and their auto packages?
+# b) Remove ALL unneeded auto packages?
+$apt_get_autoremove
+
+### Free diskspace on demand
+if [ "${COMPACT}" == "yes" ]; then
+    # Remove VBoxAddition pre-reqs
+    $apt_get_autoremove make gcc perl linux-headers-$(uname -r)
+
+    # Clean apt
+    $apt_get clean
+    sudo rm -v -r -f /var/lib/apt/lists/*
+
+    # Boot to zerofree.target
+    sudo zerofree.sh
+fi

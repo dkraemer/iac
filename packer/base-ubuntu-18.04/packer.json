@@ -4,7 +4,8 @@
         "vm_attach_snapshot": "packing",
         "vm_target_snapshot": "packed",
         "vm_user": "ubuntu",
-        "vm_password": "ubuntu"
+        "vm_password": "ubuntu",
+        "vm_compact": "yes"
     },
     "builders": [
         {
@@ -12,7 +13,7 @@
             "communicator": "ssh",
             "vm_name": "{{user `vm_name`}}",
             "attach_snapshot": "{{user `vm_attach_snapshot`}}",
-            "headless": true,
+            "headless": false,
             "skip_export": true,
             "target_snapshot": "{{user `vm_target_snapshot`}}",
             "shutdown_command": "sudo systemctl poweroff",
@@ -29,6 +30,11 @@
         },
         {
             "type": "file",
+            "source": "noclear.conf",
+            "destination": "noclear.conf"
+        },
+        {
+            "type": "file",
             "source": "bash_aliases",
             "destination": ".bash_aliases"
         },
@@ -38,11 +44,28 @@
             "destination": "authorized_keys"
         },
         {
+            "type": "file",
+            "source": "zerofree.sh",
+            "destination": "zerofree.sh"
+        },
+        {
+            "type": "file",
+            "source": "zerofree.service",
+            "destination": "zerofree.service"
+        },
+        {
+            "type": "file",
+            "source": "zerofree.target",
+            "destination": "zerofree.target"
+        },
+        {
             "type": "shell",
             "environment_vars": [
-                "PASSWORD={{user `vm_password`}}"
+                "PASSWORD={{user `vm_password`}}",
+                "COMPACT={{user `vm_compact`}}"
             ],
-            "script": "provision.sh"
+            "script": "provision.sh",
+            "expect_disconnect": true
         }
     ]
 }

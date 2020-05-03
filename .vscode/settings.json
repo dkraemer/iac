@@ -2,7 +2,8 @@
     "explorer.compactFolders": false,
     "files.associations": {
         "bash_aliases": "shellscript",
-        "grub": "shellscript"
+        "grub": "shellscript",
+        "noclear.conf": "systemd-unit-file"
     },
     "licenser.license": "BSD3",
     "licenser.author": "Daniel Kraemer <dkraemer@dkross.org>"
