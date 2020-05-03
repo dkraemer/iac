@@ -1,4 +1,8 @@
 #!/bin/bash
+# Copyright 2020 Daniel Kraemer <dkraemer@dkross.org>. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 set -o nounset
 set -o errexit
 
@@ -61,7 +65,7 @@ sudo cp -v .bash_aliases /etc/skel/
 sudo cp -v .bash_aliases /root/
 
 ### Install addtional packages
-$apt_get_install zerofree
+$apt_get_install zerofree net-tools
 
 ### Purge unwanted packages
 $apt_get remove -y --purge plymouth linux-firmware
