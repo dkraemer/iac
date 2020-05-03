@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "packer: validate base-ubuntu-18.04",
+            "label": "packer: base-ubuntu-18.04 validate",
             "type": "shell",
             "command": "packer validate packer.json",
             "options": {
@@ -12,14 +12,14 @@
             }
         },
         {
-            "label": "packer: build base-ubuntu-18.04",
+            "label": "packer: base-ubuntu-18.04 build",
             "type": "shell",
             "command": "packer build packer.json",
             "options": {
                 "cwd": "packer/base-ubuntu-18.04"
             },
             "dependsOn": [
-                "packer: validate base-ubuntu-18.04"
+                "packer: base-ubuntu-18.04 validate"
             ],
             "problemMatcher": [],
             "group": {
