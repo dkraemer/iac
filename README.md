@@ -2,7 +2,7 @@
 A collection of templates to automate my virtual test environment.
 ### Repository structure
 - [Settings](.vscode) for [Visual Studio Code](https://code.visualstudio.com/)
-- [Files](packer) for packer (build and provision)
+- [packer projects](packer)
 ### Used software
 - [Oracle VirtualBox](https://www.virtualbox.org)
 - [HashiCorp packer](https://www.packer.io)
