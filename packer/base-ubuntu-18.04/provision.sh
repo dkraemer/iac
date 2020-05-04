@@ -62,8 +62,8 @@ $apt_get_autoremove plymouth linux-firmware
 # b) Remove ALL unneeded auto packages?
 $apt_get_autoremove
 
-### Free diskspace on demand
-if [ "${COMPACT}" == "yes" ]; then
+### Run cleanup.sh on demand
+if [ "${CLEANUP}" == "yes" ]; then
 
     # Tell cleanup.sh to run in development mode
     if [ "${DEV_MODE}" == "yes" ]; then

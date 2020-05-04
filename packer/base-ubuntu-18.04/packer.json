@@ -1,24 +1,27 @@
 {
     "variables": {
         "dev_mode": "no",
-        "vm_name": "base-ubuntu-18.04",
-        "vm_attach_snapshot": "packing",
-        "vm_target_snapshot": "packed",
-        "vm_user": "ubuntu",
-        "vm_password": "ubuntu",
-        "vm_compact": "yes"
+        "source_vm_name": "base-ubuntu-18.04",
+        "source_vm_attach_snapshot": "packing",
+        "source_vm_target_snapshot": "packer-base",
+        "source_vm_user": "ubuntu",
+        "source_vm_password": "ubuntu",
+        "vm_cleanup": "yes",
+        "output_name_prefix": "base-",
+        "output_name": "ubuntu-18.04"
     },
     "builders": [
         {
             "type": "virtualbox-vm",
             "communicator": "ssh",
-            "name": "{{user `vm_name`}}",
-            "vm_name": "{{user `vm_name`}}",
-            "attach_snapshot": "{{user `vm_attach_snapshot`}}",
-            "target_snapshot": "{{user `vm_target_snapshot`}}",
+            "name": "{{user `output_name_prefix`}}{{user `output_name`}}",
+            "vm_name": "{{user `source_vm_name`}}",
+            "attach_snapshot": "{{user `source_vm_attach_snapshot`}}",
+            "target_snapshot": "{{user `source_vm_target_snapshot`}}",
             "shutdown_command": "sudo systemctl poweroff",
-            "ssh_username": "{{user `vm_user`}}",
-            "ssh_password": "{{user `vm_password`}}",
+            "ssh_username": "{{user `source_vm_user`}}",
+            "ssh_password": "{{user `source_vm_password`}}",
+            "format": "ova",
             "skip_export": false,
             "headless": true,
             "force_delete_snapshot": false,
@@ -41,8 +44,8 @@
             "type": "shell",
             "environment_vars": [
                 "DEV_MODE={{user `dev_mode`}}",
-                "PASSWORD={{user `vm_password`}}",
-                "COMPACT={{user `vm_compact`}}"
+                "PASSWORD={{user `source_vm_password`}}",
+                "CLEANUP={{user `vm_cleanup`}}"
             ],
             "script": "provision.sh",
             "expect_disconnect": true
