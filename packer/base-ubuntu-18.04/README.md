@@ -1,4 +1,4 @@
-#Minimal Ubuntu 18.04 LTS from existing VM
+# Minimal Ubuntu 18.04 LTS from existing VM
 
 ### Required software
 - [Oracle VirtualBox (tested with version 6.1.6)](https://www.virtualbox.org/wiki/Downloads)
