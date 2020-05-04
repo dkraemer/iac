@@ -63,9 +63,6 @@ case "$1" in
     # Perform offline cleanup
     run)
 
-        # System state when leaving this target
-        final_state='reboot'
-
         # Prepare the generation of new SSH host keys
         mount -v / -o remount,rw
         rm -v -f /etc/ssh/ssh_host_*
@@ -75,7 +72,6 @@ case "$1" in
         if [ ! -f /.dev_mode ]; then
             # Execute zerofree
             zerofree -v /dev/sda2
-            final_state='poweroff'
         fi
         
         # The following commands need a writable filesystem
@@ -87,8 +83,8 @@ case "$1" in
         # Tell grub that this boot was successful
         grub-editenv /boot/grub/grubenv unset recordfail
 
-        # Change system state
-        systemctl $final_state
+        # Shutdown the VM for exporting/cloning
+        systemctl poweroff
         ;;
 
     # Called from cleanup-finish.service after first boot
