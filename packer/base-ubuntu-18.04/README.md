@@ -14,7 +14,7 @@ This is required until I decide to preseed the installation. (Which sucks BTW)
 ### Project structure
 - Variables:
   - `dev_mode`: When set to `yes`, the provision script will run in lopment mode (default: `no`).
-  - `source_vm_name`: Name of the VM created in step 2. (default: e-ubuntu-18.04`).
+  - `source_vm_name`: Name of the VM created in step 2. (default: `base-ubuntu-18.04`).
   - `source_vm_attach_snapshot`: Name of the snapshot created in step 4 ault: `packing`).
   - `source_vm_target_snapshot`: Name of the snapshot that is created by er (default: `packed`).
   - `source_vm_user`: Name of the user created during Ubuntu allation (default: `ubuntu`).
