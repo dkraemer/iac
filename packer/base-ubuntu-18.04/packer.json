@@ -12,16 +12,18 @@
         {
             "type": "virtualbox-vm",
             "communicator": "ssh",
+            "name": "{{user `vm_name`}}",
             "vm_name": "{{user `vm_name`}}",
             "attach_snapshot": "{{user `vm_attach_snapshot`}}",
             "target_snapshot": "{{user `vm_target_snapshot`}}",
             "shutdown_command": "sudo systemctl poweroff",
             "ssh_username": "{{user `vm_user`}}",
             "ssh_password": "{{user `vm_password`}}",
-            "skip_export": true,
-            "headless": false,
-            "force_delete_snapshot": true,
-            "keep_registered": true
+            "skip_export": false,
+            "headless": true,
+            "force_delete_snapshot": false,
+            "keep_registered": false,
+            "output_directory": "output"
         }
     ],
     "provisioners": [
