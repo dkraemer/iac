@@ -3,7 +3,7 @@
 # license that can be found in the LICENSE file.
 
 [Unit]
-Description=zerofree of /dev/sda2
+Description=Cleanup of /dev/sda2
 DefaultDependencies=no
 Before=shutdown.target
 Before=rescue.service
@@ -11,7 +11,7 @@ Conflicts=shutdown.target
 Conflicts=rescue.service
 
 [Service]
-ExecStart=/usr/local/sbin/zerofree.sh service
+ExecStart=/opt/provision/cleanup.sh run
 Type=idle
 StandardInput=tty-force
 StandardOutput=inherit

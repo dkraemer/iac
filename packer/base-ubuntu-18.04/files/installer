@@ -1,0 +1,72 @@
+#!/bin/bash
+# Copyright 2020 Daniel Kraemer <dkraemer@dkross.org>. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+set -o nounset
+set -o errexit
+
+# All paths are relative to this script's directoy
+cd $(dirname "${0}")
+
+# Line number counter
+line_no=0
+
+while read line; do
+    # Increment the line number counter
+    ((line_no=line_no+1))
+
+    # Skip blank and comment lines
+    if [ -z "${line}" ] || [[ "${line}" =~ ^\# ]]; then
+        continue
+    fi
+
+    # Split the current line into fields
+    OLDIFS=$IFS
+    IFS=':' 
+    read -ra fields <<< "${line}"
+    IFS=$OLDIFS
+
+    # The first five fields are mandatory
+    if [ ${#fields[@]} -lt 5 ]; then
+        echo "ERROR: Missing at least one mandatory field in line ${line_no}!" >/dev/stderr
+        exit 1
+    fi
+
+    # Name the mandatory fields (remove leading and trailing whitespace)
+    regex='[[:space:]]?([^[:space:]]+)[[:space:]]?'
+
+    [[ "${fields[0]}" =~ $regex ]]
+    file=${BASH_REMATCH[1]}
+
+    [[ "${fields[1]}" =~ $regex ]]
+    mode=${BASH_REMATCH[1]}
+
+    [[ "${fields[2]}" =~ $regex ]]
+    owner=${BASH_REMATCH[1]}
+
+    [[ "${fields[3]}" =~ $regex ]]
+    group=${BASH_REMATCH[1]}
+
+    [[ "${fields[4]}" =~ $regex ]]
+    target_path=${BASH_REMATCH[1]}
+
+    # Install the current file (backup existing files using the suffix '.ubuntu')
+    sudo install -v -m $mode -o $owner -g $group -b -S .ubuntu -D "$file" "$target_path"
+
+    # Check if the optional fields (post-install commands) are present
+    if [ ${#fields[@]} -ge 6 ]; then
+
+        # Treat all remaining fields as post-install commands
+        for (( id=5; id<${#fields[@]}; id++ )); do
+
+            # Name the optional field
+            post_install_command=${fields[id]}
+
+            # Execute the command
+            if [ -n "${fields[id]}" ]; then
+                echo "Executing post-install command '${post_install_command}'"
+                $post_install_command
+            fi
+        done
+    fi
+done <.install

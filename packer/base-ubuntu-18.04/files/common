@@ -1,0 +1,5 @@
+apt_get="sudo DEBIAN_FRONTEND=noninteractive apt-get"
+apt_get_install="${apt_get} install -y --no-install-recommends"
+apt_get_autoremove="${apt_get} autoremove -y --purge"
+
+vbox_required_packages="make gcc perl linux-headers-$(uname -r)"

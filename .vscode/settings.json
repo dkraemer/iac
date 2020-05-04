@@ -3,7 +3,8 @@
     "files.associations": {
         "bash_aliases": "shellscript",
         "grub": "shellscript",
-        "noclear.conf": "systemd-unit-file"
+        "noclear.conf": "systemd-unit-file",
+        "variables": "shellscript",
     },
     "licenser.license": "BSD3",
     "licenser.author": "Daniel Kraemer <dkraemer@dkross.org>"

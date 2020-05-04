@@ -12,6 +12,19 @@
             }
         },
         {
+            "label": "packer: base-ubuntu-18.04 build (development build)",
+            "type": "shell",
+            "command": "packer build -var 'dev_mode=yes' packer.json",
+            "options": {
+                "cwd": "packer/base-ubuntu-18.04"
+            },
+            "dependsOn": [
+                "packer: base-ubuntu-18.04 validate"
+            ],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
             "label": "packer: base-ubuntu-18.04 build",
             "type": "shell",
             "command": "packer build packer.json",

@@ -1,5 +1,6 @@
 {
     "variables": {
+        "dev_mode": "no",
         "vm_name": "base-ubuntu-18.04",
         "vm_attach_snapshot": "packing",
         "vm_target_snapshot": "packed",
@@ -13,54 +14,30 @@
             "communicator": "ssh",
             "vm_name": "{{user `vm_name`}}",
             "attach_snapshot": "{{user `vm_attach_snapshot`}}",
-            "headless": false,
-            "skip_export": true,
             "target_snapshot": "{{user `vm_target_snapshot`}}",
             "shutdown_command": "sudo systemctl poweroff",
             "ssh_username": "{{user `vm_user`}}",
             "ssh_password": "{{user `vm_password`}}",
-            "force_delete_snapshot": false
+            "skip_export": true,
+            "headless": false,
+            "force_delete_snapshot": true,
+            "keep_registered": true
         }
     ],
     "provisioners": [
         {
-            "type": "file",
-            "source": "grub",
-            "destination": "grub"
+            "type": "shell-local",
+            "command": "tar -cvzf files.tar.gz files"
         },
         {
             "type": "file",
-            "source": "noclear.conf",
-            "destination": "noclear.conf"
-        },
-        {
-            "type": "file",
-            "source": "bash_aliases",
-            "destination": ".bash_aliases"
-        },
-        {
-            "type": "file",
-            "source": "../../id_rsa.pub",
-            "destination": "authorized_keys"
-        },
-        {
-            "type": "file",
-            "source": "zerofree.sh",
-            "destination": "zerofree.sh"
-        },
-        {
-            "type": "file",
-            "source": "zerofree.service",
-            "destination": "zerofree.service"
-        },
-        {
-            "type": "file",
-            "source": "zerofree.target",
-            "destination": "zerofree.target"
+            "source": "files.tar.gz",
+            "destination": "files.tar.gz"
         },
         {
             "type": "shell",
             "environment_vars": [
+                "DEV_MODE={{user `dev_mode`}}",
                 "PASSWORD={{user `vm_password`}}",
                 "COMPACT={{user `vm_compact`}}"
             ],

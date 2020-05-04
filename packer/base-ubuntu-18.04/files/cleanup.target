@@ -3,7 +3,7 @@
 # license that can be found in the LICENSE file.
 
 [Unit]
-Description=Zerofree Mode
-Requires=zerofree.service
-After=zerofree.service
+Description=Cleanup Mode
+Requires=cleanup.service
+After=cleanup.service
 AllowIsolate=yes

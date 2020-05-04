@@ -1,0 +1,18 @@
+# Copyright 2020 Daniel Kraemer <dkraemer@dkross.org>. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+[Unit]
+Description=Finish cleanup of /dev/sda2
+After=network-online.target
+Before=ssh.service
+Wants=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/provision/cleanup.sh finish
+StandardOutput=journal+console
+StandardError=journal+console

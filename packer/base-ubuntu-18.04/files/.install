@@ -1,0 +1,17 @@
+# Installer file syntax:
+# - Fields must be delimited by a single colon ':'.
+# - Whitespace between the fields is allowed.
+# - File names must not contain whitespace.
+# - Lines starting with '#' are ignored.
+# <source file>         : <mode>    : <owner>   : <group>   : <destination file>                                    [:<post-install commands>]...
+authorized_keys         : 600       : ubuntu    : ubuntu    : /home/ubuntu/.ssh/authorized_keys                     : sudo chown -v ubuntu.ubuntu /home/ubuntu/.ssh : chmod -v 700 /home/ubuntu/.ssh
+bash_aliases            : 644       : root      : root      : /etc/skel/.bash_aliases
+bash_aliases            : 644       : root      : root      : /root/.bash_aliases
+bash_aliases            : 644       : ubuntu    : ubuntu    : /home/ubuntu/.bash_aliases
+cleanup-finish.service  : 644       : root      : root      : /etc/systemd/system/cleanup-finish.service
+cleanup.service         : 644       : root      : root      : /etc/systemd/system/cleanup.service
+cleanup.sh              : 744       : root      : root      : /opt/provision/cleanup.sh
+cleanup.target          : 644       : root      : root      : /etc/systemd/system/cleanup.target
+common                  : 644       : root      : root      : /opt/provision/common
+grub                    : 644       : root      : root      : /etc/default/grub:sudo update-grub
+noclear.conf            : 644       : root      : root      : /etc/systemd/system/getty@tty1.service.d/noclear.conf
