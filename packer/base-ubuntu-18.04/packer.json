@@ -34,7 +34,8 @@
         {
             "type": "file",
             "source": "files.tar.gz",
-            "destination": "files.tar.gz"
+            "destination": "files.tar.gz",
+            "generated": true
         },
         {
             "type": "shell",
