@@ -30,3 +30,9 @@ This is required until I decide to preseed the installation. (Which sucks BTW)
   - [file](https://www.packer.io/docs/provisioners/file/)
   - [shell](https://www.packer.io/docs/provisioners/shell/)
   - [shell-local](https://www.packer.io/docs/provisioners/shell-local/)
+
+### Notes on the VM built by this packer file
+  - SSH access is only possible if you copy the desired `authorized_keys` file to your *running* VM.
+    - You can use the VirtualBox UI of your VM (Menu: `Machine/File Manager...`)
+    - You can use the command line
+      - Example: `VBoxManage guestcontrol base-ubuntu-18.04 copyto --username ubuntu --password ubuntu --verbose --target-directory /home/ubuntu/.ssh /path/to/local/desired/authorized_keys`
