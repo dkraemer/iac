@@ -1,8 +1,8 @@
 # Minimal Ubuntu 18.04 LTS from existing VM
 
-### Required software
-- [Oracle VirtualBox (tested with version 6.1.6 on Windows 10 1909)](https://www.virtualbox.org/wiki/Downloads)
-- [HashiCorp packer (tested with version 1.5.6 on Windows 10 1909)](https://www.packer.io/downloads/)
+### Required software (tested on Windows 10 1909)
+- [Oracle VirtualBox 6.1.6](https://www.virtualbox.org/wiki/Downloads)
+- [HashiCorp packer 1.5.6](https://www.packer.io/downloads/)
 
 ### Creating the required base VM
 This is required until I decide to preseed the installation. (Which sucks BTW)
