@@ -10,10 +10,6 @@ set -o errexit
 echo $PASSWORD | sudo -S echo "sudo unlocked"
 echo "$USER ALL=(ALL) NOPASSWD:ALL" | (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/provision')
 
-### Remove password and disable password login
-sudo passwd -d $USER
-sudo passwd -l $USER
-
 ### Install files in files.tar.gz
 tar -xzf files.tar.gz -C /tmp
 rm -v -f files.tar.gz
@@ -52,6 +48,9 @@ sudo mount -v /tmp
 
 ### SSH: Disable root login and password authentication
 sudo sed -e 's/^#\(PermitRootLogin\).*/\1 no/' -e 's/^#\(PasswordAuthentication\).*/\1 no/' -i /etc/ssh/sshd_config
+
+### SSH: Create user directory
+mkdir -v -m 700 "${HOME}/.ssh"
 
 ### Purge unwanted packages
 $apt_get_autoremove plymouth linux-firmware
