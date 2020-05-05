@@ -20,6 +20,10 @@ while read line; do
         continue
     fi
 
+    # Expand well-known variables
+    line=${line//\$USER/$USER}
+    line=${line//\$HOME/$HOME}
+
     # Split the current line into fields
     OLDIFS=$IFS
     IFS=':' 
