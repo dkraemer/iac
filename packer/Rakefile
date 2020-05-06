@@ -1,0 +1,31 @@
+# Copyright 2020 Daniel Kraemer <dkraemer@dkross.org>. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+require_relative '../rake/utils.rb'
+require_relative '../rake/packerproject.rb'
+
+namespace :packer do
+
+  def packer_project(project_name)
+    Utils.mandatory_argument(project_name, 'project_name')
+    project_path = File.expand_path(project_name, File.dirname(__FILE__))
+    PackerProject.new(project_path)
+  end
+
+  task :clean, [:project_name] do |_, args|
+    packer_project(args.project_name).git_clean_ignored()
+  end
+
+  task :inspect, [:project_name] do |_, args|
+    packer_project(args.project_name).inspect()
+  end
+
+  task :validate, [:project_name] do |_, args|
+    packer_project(args.project_name).validate(args.extras)
+  end
+
+  task :build, [:project_name] => [:validate] do |_, args|
+    packer_project(args.project_name).build(args.extras)
+  end
+end
