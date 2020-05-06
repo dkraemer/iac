@@ -22,6 +22,15 @@ set -o xtrace
 ### Source common code (installed from files.tar.gz)
 . /opt/provision/common
 
+### Purge unwanted packages
+$apt_get_autoremove plymouth linux-firmware
+
+### Purge unneeded auto packages
+# TODO: Is this really required? Does the previous run:
+# a) Remove ONLY plymouth, ... and their auto packages?
+# b) Remove ALL unneeded auto packages?
+$apt_get_autoremove
+
 ### Update & upgrade packages
 $apt_get update
 $apt_get upgrade -y
@@ -51,15 +60,6 @@ sudo sed -e 's/^#\(PermitRootLogin\).*/\1 no/' -e 's/^#\(PasswordAuthentication\
 
 ### SSH: Create user directory
 mkdir -v -m 700 "${HOME}/.ssh"
-
-### Purge unwanted packages
-$apt_get_autoremove plymouth linux-firmware
-
-### Purge unneeded auto packages
-# TODO: Is this really required? Does the previous run:
-# a) Remove ONLY plymouth, ... and their auto packages?
-# b) Remove ALL unneeded auto packages?
-$apt_get_autoremove
 
 ### Run cleanup.sh on demand
 if [ "${CLEANUP}" == "yes" ]; then
