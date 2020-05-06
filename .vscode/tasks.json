@@ -4,41 +4,47 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "packer: base-ubuntu-18.04 validate",
+            "label": "packer validate",
             "type": "shell",
-            "command": "packer validate packer.json",
-            "options": {
-                "cwd": "packer/base-ubuntu-18.04"
-            }
+            "command": "rake packer:validate[${input:packerProject}]",
+            "problemMatcher": [],
         },
         {
-            "label": "packer: base-ubuntu-18.04 build (development build)",
+            "label": "packer validate (dev)",
             "type": "shell",
-            "command": "packer build -var 'dev_mode=yes' packer.json",
-            "options": {
-                "cwd": "packer/base-ubuntu-18.04"
-            },
-            "dependsOn": [
-                "packer: base-ubuntu-18.04 validate"
-            ],
+            "command": "rake 'packer:validate[${input:packerProject},-var-file vars.dev.json]'",
+            "problemMatcher": [],
+        },
+        {
+            "label": "packer inspect",
+            "type": "shell",
+            "command": "rake packer:inspect[${input:packerProject}]",
+            "problemMatcher": []
+        },
+        {
+            "label": "packer build",
+            "type": "shell",
+            "command": "rake packer:build[${input:packerProject}]",
             "problemMatcher": [],
             "group": "build"
         },
         {
-            "label": "packer: base-ubuntu-18.04 build",
+            "label": "packer build (dev)",
             "type": "shell",
-            "command": "packer build packer.json",
-            "options": {
-                "cwd": "packer/base-ubuntu-18.04"
-            },
-            "dependsOn": [
-                "packer: base-ubuntu-18.04 validate"
-            ],
+            "command": "rake 'packer:build[${input:packerProject},-var-file vars.dev.json]'",
             "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "packerProject",
+            "type": "pickString",
+            "description": "[packer] Choose a project:",
+            "options": [
+                "base-ubuntu-18.04"
+            ],
+            "default": "base-ubuntu-18.04"
         }
     ]
 }

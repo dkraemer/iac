@@ -1,30 +1,30 @@
 {
     "variables": {
+        "vm_name": "base-ubuntu-18.04",
+        "attach_snapshot": "packing",
+        "target_snapshot": "packer-base",
+        "ssh_username": "ubuntu",
+        "ssh_password": "ubuntu",
+        "skip_export": "false",
+        "headless": "true",
+        "force_delete_snapshot": "false",
         "dev_mode": "no",
-        "source_vm_name": "base-ubuntu-18.04",
-        "source_vm_attach_snapshot": "packing",
-        "source_vm_target_snapshot": "packer-base",
-        "source_vm_user": "ubuntu",
-        "source_vm_password": "ubuntu",
-        "vm_cleanup": "yes",
-        "output_name_prefix": "base-",
-        "output_name": "ubuntu-18.04"
+        "vm_cleanup": "yes"
     },
     "builders": [
         {
             "type": "virtualbox-vm",
             "communicator": "ssh",
-            "name": "{{user `output_name_prefix`}}{{user `output_name`}}",
-            "vm_name": "{{user `source_vm_name`}}",
-            "attach_snapshot": "{{user `source_vm_attach_snapshot`}}",
-            "target_snapshot": "{{user `source_vm_target_snapshot`}}",
+            "vm_name": "{{user `vm_name`}}",
+            "attach_snapshot": "{{user `attach_snapshot`}}",
+            "target_snapshot": "{{user `target_snapshot`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_password": "{{user `ssh_password`}}",
+            "skip_export": "{{user `skip_export`}}",
+            "headless": "{{user `headless`}}",
+            "force_delete_snapshot": "{{user `force_delete_snapshot`}}",
             "shutdown_command": "sudo systemctl poweroff",
-            "ssh_username": "{{user `source_vm_user`}}",
-            "ssh_password": "{{user `source_vm_password`}}",
             "format": "ova",
-            "skip_export": false,
-            "headless": true,
-            "force_delete_snapshot": false,
             "keep_registered": false,
             "output_directory": "output"
         }
@@ -44,7 +44,7 @@
             "type": "shell",
             "environment_vars": [
                 "DEV_MODE={{user `dev_mode`}}",
-                "PASSWORD={{user `source_vm_password`}}",
+                "PASSWORD={{user `ssh_password`}}",
                 "CLEANUP={{user `vm_cleanup`}}"
             ],
             "script": "provision.sh",
