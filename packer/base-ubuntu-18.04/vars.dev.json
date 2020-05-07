@@ -2,5 +2,5 @@
   "skip_export": "true",
   "headless": "false",
   "force_delete_snapshot": "true",
-  "dev_mode": "yes"
+  "cleanup_dev_mode": "true"
 }

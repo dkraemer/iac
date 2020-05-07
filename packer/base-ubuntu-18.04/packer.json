@@ -1,15 +1,14 @@
 {
   "variables": {
     "vm_name": "base-ubuntu-18.04",
-    "attach_snapshot": "packing",
-    "target_snapshot": "packer-base",
+    "attach_snapshot": "packer-start",
+    "target_snapshot": "packer-finished",
     "ssh_username": "ubuntu",
     "ssh_password": "ubuntu",
     "skip_export": "false",
     "headless": "true",
     "force_delete_snapshot": "false",
-    "dev_mode": "no",
-    "vm_cleanup": "yes"
+    "cleanup_dev_mode": "false"
   },
   "builders": [
     {
@@ -43,9 +42,9 @@
     {
       "type": "shell",
       "environment_vars": [
-        "DEV_MODE={{user `dev_mode`}}",
-        "PASSWORD={{user `ssh_password`}}",
-        "CLEANUP={{user `vm_cleanup`}}"
+        "SSH_PASSWORD={{user `ssh_password`}}",
+        "SKIP_EXPORT={{user `skip_export`}}",
+        "CLEANUP_DEV_MODE={{user `cleanup_dev_mode`}}"
       ],
       "script": "provision.sh",
       "expect_disconnect": true
