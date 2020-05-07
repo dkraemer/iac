@@ -1,12 +1,25 @@
 {
-    "files.associations": {
-        "bash_aliases": "shellscript",
-        "grub": "shellscript",
-        "noclear.conf": "systemd-unit-file",
-        "variables": "shellscript",
-    },
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "licenser.license": "BSD3",
-    "licenser.author": "Daniel Kraemer <dkraemer@dkross.org>"
+  "files.associations": {
+    "bash_aliases": "shellscript",
+    "grub": "shellscript",
+    "noclear.conf": "systemd-unit-file",
+    "common": "shellscript"
+  },
+  "editor.detectIndentation": false,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2
+  },
+  "[ruby]": {
+    "editor.tabSize": 2
+  },
+
+  "licenser.license": "BSD3",
+  "licenser.author": "Daniel Kraemer <dkraemer@dkross.org>"
 }

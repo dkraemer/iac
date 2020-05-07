@@ -1,54 +1,54 @@
 {
-    "variables": {
-        "vm_name": "base-ubuntu-18.04",
-        "attach_snapshot": "packing",
-        "target_snapshot": "packer-base",
-        "ssh_username": "ubuntu",
-        "ssh_password": "ubuntu",
-        "skip_export": "false",
-        "headless": "true",
-        "force_delete_snapshot": "false",
-        "dev_mode": "no",
-        "vm_cleanup": "yes"
+  "variables": {
+    "vm_name": "base-ubuntu-18.04",
+    "attach_snapshot": "packing",
+    "target_snapshot": "packer-base",
+    "ssh_username": "ubuntu",
+    "ssh_password": "ubuntu",
+    "skip_export": "false",
+    "headless": "true",
+    "force_delete_snapshot": "false",
+    "dev_mode": "no",
+    "vm_cleanup": "yes"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-vm",
+      "communicator": "ssh",
+      "vm_name": "{{user `vm_name`}}",
+      "attach_snapshot": "{{user `attach_snapshot`}}",
+      "target_snapshot": "{{user `target_snapshot`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "skip_export": "{{user `skip_export`}}",
+      "headless": "{{user `headless`}}",
+      "force_delete_snapshot": "{{user `force_delete_snapshot`}}",
+      "shutdown_command": "sudo systemctl poweroff",
+      "format": "ova",
+      "keep_registered": false,
+      "output_directory": "output"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "tar -cvzf files.tar.gz files"
     },
-    "builders": [
-        {
-            "type": "virtualbox-vm",
-            "communicator": "ssh",
-            "vm_name": "{{user `vm_name`}}",
-            "attach_snapshot": "{{user `attach_snapshot`}}",
-            "target_snapshot": "{{user `target_snapshot`}}",
-            "ssh_username": "{{user `ssh_username`}}",
-            "ssh_password": "{{user `ssh_password`}}",
-            "skip_export": "{{user `skip_export`}}",
-            "headless": "{{user `headless`}}",
-            "force_delete_snapshot": "{{user `force_delete_snapshot`}}",
-            "shutdown_command": "sudo systemctl poweroff",
-            "format": "ova",
-            "keep_registered": false,
-            "output_directory": "output"
-        }
-    ],
-    "provisioners": [
-        {
-            "type": "shell-local",
-            "command": "tar -cvzf files.tar.gz files"
-        },
-        {
-            "type": "file",
-            "source": "files.tar.gz",
-            "destination": "files.tar.gz",
-            "generated": true
-        },
-        {
-            "type": "shell",
-            "environment_vars": [
-                "DEV_MODE={{user `dev_mode`}}",
-                "PASSWORD={{user `ssh_password`}}",
-                "CLEANUP={{user `vm_cleanup`}}"
-            ],
-            "script": "provision.sh",
-            "expect_disconnect": true
-        }
-    ]
+    {
+      "type": "file",
+      "source": "files.tar.gz",
+      "destination": "files.tar.gz",
+      "generated": true
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEV_MODE={{user `dev_mode`}}",
+        "PASSWORD={{user `ssh_password`}}",
+        "CLEANUP={{user `vm_cleanup`}}"
+      ],
+      "script": "provision.sh",
+      "expect_disconnect": true
+    }
+  ]
 }
