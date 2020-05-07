@@ -1,6 +1,6 @@
 {
-    "skip_export": "true",
-    "headless": "false",
-    "force_delete_snapshot": "true",
-    "dev_mode": "yes"
+  "skip_export": "true",
+  "headless": "false",
+  "force_delete_snapshot": "true",
+  "dev_mode": "yes"
 }
