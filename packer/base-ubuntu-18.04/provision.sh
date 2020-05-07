@@ -7,7 +7,7 @@ set -o nounset
 set -o errexit
 
 ### Unlock sudo and add provision sudoers file
-echo $PASSWORD | sudo -S echo "sudo unlocked"
+echo $SSH_PASSWORD | sudo -S echo "sudo unlocked"
 echo "$USER ALL=(ALL) NOPASSWD:ALL" | (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/provision')
 
 ### Install files in files.tar.gz
@@ -62,11 +62,11 @@ sudo sed -e 's/^#\(PermitRootLogin\).*/\1 no/' -e 's/^#\(PasswordAuthentication\
 mkdir -v -m 700 "${HOME}/.ssh"
 
 ### Run cleanup.sh on demand
-if [ "${CLEANUP}" == "yes" ]; then
+if [ "${SKIP_EXPORT}" == "false" ] || [ "${CLEANUP_DEV_MODE}" == "true" ]; then
 
     # Tell cleanup.sh to run in development mode
-    if [ "${DEV_MODE}" == "yes" ]; then
-        sudo touch /.dev_mode
+    if [ "${CLEANUP_DEV_MODE}" == "true" ]; then
+        sudo touch /.cleanup_dev_mode
     fi
 
     sudo /opt/provision/cleanup.sh start

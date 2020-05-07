@@ -68,9 +68,8 @@ case "$1" in
         rm -v -f /etc/ssh/ssh_host_*
         mount -v / -o remount,ro
 
-        # Run only when not in development mode
-        if [ ! -f /.dev_mode ]; then
-            # Execute zerofree
+        # Run zerofree only when NOT in development mode
+        if [ ! -f /.cleanup_dev_mode ]; then
             zerofree -v /dev/sda2
         fi
         
@@ -102,9 +101,9 @@ case "$1" in
         # Disable cleanup-finish.service
         systemctl disable cleanup-finish.service
 
-        # Remove possible left-over file
-        if [ -f /.dev_mode ]; then
-            rm -v -f /.dev_mode
+        # Remove possible left-over file from development mode
+        if [ -f /.cleanup_dev_mode ]; then
+            rm -v -f /.cleanup_dev_mode
         fi
         ;;
     *)
