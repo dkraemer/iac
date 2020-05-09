@@ -28,4 +28,9 @@ namespace :packer do
   task :build, [:project_name] => [:validate] do |_, args|
     packer_project(args.project_name).build(args.extras)
   end
+
+  task :vagrant, [:project_name] => [:build] do |_, args|
+    packer_project(args.project_name).post_processor_vagrant_box('minimal-ubuntu-18.04')
+  end
+
 end

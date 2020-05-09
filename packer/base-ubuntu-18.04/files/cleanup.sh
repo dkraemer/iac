@@ -49,7 +49,6 @@ case "$1" in
 
         # Clean apt package cache
         $apt_get clean
-        rm -v -r -f /var/lib/apt/lists/*
 
         # Enable finish service
         systemctl enable cleanup-finish.service
@@ -62,25 +61,33 @@ case "$1" in
     # Called from cleanup.service
     # Perform offline cleanup
     run)
-
-        # Prepare the generation of new SSH host keys
-        mount -v / -o remount,rw
-        rm -v -f /etc/ssh/ssh_host_*
-        mount -v / -o remount,ro
-
-        # Run zerofree only when NOT in development mode
-        if [ ! -f /.cleanup_dev_mode ]; then
-            zerofree -v /dev/sda2
-        fi
-        
-        # The following commands need a writable filesystem
+        # We need a writeable rootfs
         mount -v / -o remount,rw
 
         # Restore the default target
         systemctl set-default multi-user.target
 
+        # apt-daily.timer acquires lock and breaks apt execution in our 'finish'
+        # Closes https://github.com/dkraemer/iac/issues/16
+        systemctl disable apt-daily.timer
+
         # Tell grub that this boot was successful
         grub-editenv /boot/grub/grubenv unset recordfail
+
+        # Prepare the re-generation of new SSH host keys
+        rm -v -f /etc/ssh/ssh_host_*
+
+        # Remove apt lists
+        rm -v -r -f /var/lib/apt/lists/*
+
+        # Remove all logs
+        find /var/log -type f -delete
+
+        # Run zerofree only when NOT in development mode
+        if [ "${CLEANUP_DEV_MODE}" != 'true' ]; then
+            mount -v / -o remount,ro
+            zerofree -v /dev/sda2
+        fi
 
         # Shutdown the VM for exporting/cloning
         systemctl poweroff
@@ -95,17 +102,48 @@ case "$1" in
         # Populate apt package cache again
         $apt_get update
 
+        # Upgrade packages on first boot
+        $apt_get upgrade -y
+
         # Re-install packages for VirtualBox kernel modules
         $apt_get_install $vbox_required_packages
 
         # Disable cleanup-finish.service
         systemctl disable cleanup-finish.service
 
-        # Remove possible left-over file from development mode
-        if [ -f /.cleanup_dev_mode ]; then
-            rm -v -f /.cleanup_dev_mode
+        # Re-enable apt-dialy.timer
+        systemctl enable apt-daily.timer
+
+        # Exit this script when not preparing the system for Vagrant
+        if [ "${PREPARE_FOR_VAGRANT}" != 'true' ]; then
+            exit 0
         fi
+
+        ### Setup this VM as a Vagrant base box
+        # The original provision user is no longer required
+        deluser --remove-home $PROVISION_USER
+        rm -v -f /etc/sudoers.d/provision
+
+        # See: https://www.vagrantup.com/docs/boxes/base.html#default-user-settings
+        # Add vagrant user
+        adduser --gecos 'Vagrant user' --disabled-password vagrant
+
+        # SSH: Install vagrant's temporary insecure public key
+        mkdir -v -m 700 /home/vagrant/.ssh
+        wget 'https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub' -O /home/vagrant/.ssh/authorized_keys
+        rm -v -f /root/.wget-hsts
+        chmod -v 600 /home/vagrant/.ssh/authorized_keys
+        chown -v -R vagrant.vagrant /home/vagrant/.ssh
+
+        # Set root password
+        yes vagrant | passwd root
+
+        # Enable password-less sudo
+        export EDITOR='tee -a'
+        echo 'vagrant ALL=(ALL) NOPASSWD:ALL' | visudo -f /etc/sudoers.d/vagrant
         ;;
+
+    # Handle unknown commands
     *)
         print_usage
 esac
