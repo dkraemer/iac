@@ -15,6 +15,7 @@ class Project
 
     # Full path to the given project
     @project_path = project_path
+    @project_name = File.basename project_path
 
     # Project path must exist
     unless Dir.exist?(project_path)

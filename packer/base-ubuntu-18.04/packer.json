@@ -8,7 +8,8 @@
     "skip_export": "false",
     "headless": "true",
     "force_delete_snapshot": "false",
-    "cleanup_dev_mode": "false"
+    "cleanup_dev_mode": "false",
+    "prepare_for_vagrant": "true"
   },
   "builders": [
     {
@@ -23,7 +24,7 @@
       "headless": "{{user `headless`}}",
       "force_delete_snapshot": "{{user `force_delete_snapshot`}}",
       "shutdown_command": "sudo systemctl poweroff",
-      "format": "ova",
+      "format": "ovf",
       "keep_registered": false,
       "output_directory": "output"
     }
@@ -44,6 +45,7 @@
       "environment_vars": [
         "SSH_PASSWORD={{user `ssh_password`}}",
         "SKIP_EXPORT={{user `skip_export`}}",
+        "PREPARE_FOR_VAGRANT={{user `prepare_for_vagrant`}}",
         "CLEANUP_DEV_MODE={{user `cleanup_dev_mode`}}"
       ],
       "script": "provision.sh",

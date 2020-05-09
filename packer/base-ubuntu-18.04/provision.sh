@@ -61,13 +61,12 @@ sudo sed -e 's/^#\(PermitRootLogin\).*/\1 no/' -e 's/^#\(PasswordAuthentication\
 ### SSH: Create user directory
 mkdir -v -m 700 "${HOME}/.ssh"
 
+### Save environment variables for use in cleanup.sh
+echo "PROVISION_USER=${USER}" | (sudo su -c 'tee -a /opt/provision/common')
+echo "CLEANUP_DEV_MODE=${CLEANUP_DEV_MODE}" | (sudo su -c 'tee -a /opt/provision/common')
+echo "PREPARE_FOR_VAGRANT=${PREPARE_FOR_VAGRANT}" | (sudo su -c 'tee -a /opt/provision/common')
+
 ### Run cleanup.sh on demand
-if [ "${SKIP_EXPORT}" == "false" ] || [ "${CLEANUP_DEV_MODE}" == "true" ]; then
-
-    # Tell cleanup.sh to run in development mode
-    if [ "${CLEANUP_DEV_MODE}" == "true" ]; then
-        sudo touch /.cleanup_dev_mode
-    fi
-
+if [ "${SKIP_EXPORT}" == 'false' ] || [ "${CLEANUP_DEV_MODE}" == 'true' ]; then
     sudo /opt/provision/cleanup.sh start
 fi
